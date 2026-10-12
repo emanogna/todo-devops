@@ -145,3 +145,4 @@ input:focus, select:focus, textarea:focus { border-color: var(--primary); box-sh
   .search, .search input { width: 100%; }
   .actions { width: 100%; }
 }
+.empty .btn-primary i { font-size: 14px; background: none; color: #fff; }
