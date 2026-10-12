@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TaskFlow</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<aside class="sidebar" id="sidebar">
+  <div class="logo"><span class="logo-icon"><i class="fa-solid fa-check"></i></span> TaskFlow</div>
+
+  <nav>
+    <p class="nav-label">Menu</p>
+    <button class="nav-item" data-filter="all"><i class="fa-solid fa-table-columns"></i> Dashboard</button>
+    <button class="nav-item" data-filter="pending"><i class="fa-solid fa-list-check"></i> My Tasks</button>
+    <button class="nav-item" data-filter="today"><i class="fa-regular fa-calendar-check"></i> Today</button>
+    <button class="nav-item" data-filter="upcoming"><i class="fa-regular fa-clock"></i> Upcoming</button>
+    <button class="nav-item" data-filter="completed"><i class="fa-solid fa-circle-check"></i> Completed</button>
+
+    <p class="nav-label">Categories</p>
+    <button class="nav-item" data-filter="cat:Personal"><i class="fa-solid fa-user"></i> Personal</button>
+    <button class="nav-item" data-filter="cat:College"><i class="fa-solid fa-graduation-cap"></i> College</button>
+    <button class="nav-item" data-filter="cat:Work"><i class="fa-solid fa-briefcase"></i> Work</button>
+    <button class="nav-item" data-filter="cat:Other"><i class="fa-solid fa-folder"></i> Other</button>
+  </nav>
+
+  <div class="profile">
+    <div class="avatar">M</div>
+    <div><strong>Student</strong><small>DevOps Lab</small></div>
+  </div>
+</aside>
+
+<main class="main">
+  <header class="topbar">
+    <button class="icon-btn menu-btn" id="menuBtn" title="Menu"><i class="fa-solid fa-bars"></i></button>
+    <div class="greeting">
+      <h1 id="greeting">Hello! 👋</h1>
+      <p>Let's make today productive. <span id="today-date"></span></p>
+    </div>
+    <div class="actions">
+      <div class="search"><i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" id="search" placeholder="Search tasks..."></div>
+      <button class="icon-btn" id="bell" title="Notifications"><i class="fa-regular fa-bell"></i><span class="dot" id="bellDot" hidden></span></button>
+      <button class="icon-btn" id="themeBtn" title="Dark mode"><i class="fa-solid fa-moon"></i></button>
+      <button class="btn-primary" id="newTaskBtn"><i class="fa-solid fa-plus"></i> New Task</button>
+    </div>
+  </header>
+
+  <section class="stats">
+    <div class="stat s-total"><div class="s-icon"><i class="fa-solid fa-layer-group"></i></div><div><h2 id="statTotal">0</h2><p>Total Tasks</p></div></div>
+    <div class="stat s-done"><div class="s-icon"><i class="fa-solid fa-circle-check"></i></div><div><h2 id="statDone">0</h2><p>Completed</p></div></div>
+    <div class="stat s-pending"><div class="s-icon"><i class="fa-solid fa-hourglass-half"></i></div><div><h2 id="statPending">0</h2><p>Pending</p></div></div>
+    <div class="stat s-over"><div class="s-icon"><i class="fa-solid fa-triangle-exclamation"></i></div><div><h2 id="statOver">0</h2><p>Overdue</p></div></div>
+  </section>
+
+  <section class="progress-card">
+    <div class="progress-head"><strong>Daily Productivity</strong><span id="percent">0%</span></div>
+    <div class="bar"><div class="bar-fill" id="barFill"></div></div>
+    <p class="summary" id="summary"></p>
+    <p class="quote" id="quote"></p>
+  </section>
+
+  <section class="toolbar">
+    <div class="chips" id="chips">
+      <button class="chip" data-filter="all">All</button>
+      <button class="chip" data-filter="pending">Pending</button>
+      <button class="chip" data-filter="today">Today</button>
+      <button class="chip" data-filter="upcoming">Upcoming</button>
+      <button class="chip" data-filter="completed">Completed</button>
+      <button class="chip" data-filter="high">High Priority</button>
+    </div>
+    <select id="sort">
+      <option value="newest">Sort: Newest</option>
+      <option value="due">Sort: Due date</option>
+      <option value="priority">Sort: Priority</option>
+    </select>
+  </section>
+
+  <h3 class="list-title" id="listTitle">All Tasks</h3>
+  <section class="task-list" id="taskList"></section>
+</main>
+
+<!-- Add / Edit modal -->
+<div class="backdrop" id="taskModal">
+  <form class="modal" id="taskForm" novalidate>
+    <h2 id="modalTitle">New Task</h2>
+    <p class="form-error" id="formError"></p>
+    <label>Title *<input type="text" id="fTitle" maxlength="100" placeholder="e.g. Finish Jenkins pipeline"></label>
+    <label>Description<textarea id="fDesc" rows="3" maxlength="300" placeholder="Optional details..."></textarea></label>
+    <div class="row">
+      <label>Due date<input type="date" id="fDue"></label>
+      <label>Priority
+        <select id="fPriority"><option>Low</option><option selected>Medium</option><option>High</option></select></label>
+      <label>Category
+        <select id="fCategory"><option>Personal</option><option>College</option><option>Work</option><option>Other</option></select></label>
+    </div>
+    <div class="modal-actions">
+      <button type="button" class="btn-ghost" id="cancelBtn">Cancel</button>
+      <button type="submit" class="btn-primary" id="submitBtn">Add Task</button>
+    </div>
+  </form>
+</div>
+
+<!-- Delete confirmation modal -->
+<div class="backdrop" id="deleteModal">
+  <div class="modal small">
+    <h2>Delete task?</h2>
+    <p>This cannot be undone.</p>
+    <div class="modal-actions">
+      <button class="btn-ghost" id="delCancel">Cancel</button>
+      <button class="btn-danger" id="delConfirm">Delete</button>
+    </div>
+  </div>
+</div>
+
+<div class="toasts" id="toasts"></div>
+
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
