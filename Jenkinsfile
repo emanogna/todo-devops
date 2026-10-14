@@ -1,10 +1,11 @@
 pipeline {
     agent any
 
-    environment {
+        environment {
         PYTHON = 'C:\\Users\\manog\\AppData\\Local\\Programs\\Python\\Python313\\python.exe'
         IMAGE  = 'manogna0807/todo-devops'
         PATH   = "C:\\Users\\manog\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin;${env.PATH}"
+        KUBECONFIG = 'C:\\Users\\manog\\.kube\\config'
     }
 
     stages {
