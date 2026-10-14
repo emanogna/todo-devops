@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         PYTHON = 'C:\\Users\\manog\\AppData\\Local\\Programs\\Python\\Python313\\python.exe'
-        IMAGE  = 'yourusername/todo-devops'
+        IMAGE  = 'manogna0807/todo-devops'
     }
 
     stages {
