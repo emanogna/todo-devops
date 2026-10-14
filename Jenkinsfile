@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        PYTHON = 'C:\\Users\\manog\\AppData\\Local\\Programs\\Python\\Python312\\python.exe'
+        PYTHON = 'C:\\Users\\manog\\AppData\\Local\\Programs\\Python\\Python313\\python.exe'
         IMAGE  = 'yourusername/todo-devops'
     }
 
